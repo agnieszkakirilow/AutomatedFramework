@@ -1,0 +1,1 @@
+# without it you have to run python -m pytest . instead of pytest .
