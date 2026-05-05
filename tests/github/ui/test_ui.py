@@ -5,32 +5,27 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
 import time
+import pytest
+from src.applications.github.ui.github_ui import GitHubUILoginPage
 
+@pytest.fixture
+def github_login():
+    # tearup for each
+    github_login_page = GitHubUILoginPage()
+    github_login_page.navigate_to_page()
 
-def test_github_login_negative():
+    yield github_login_page
+    
+    #teardown for each
+    github_login_page.close_browser()
+
+def test_github_login_negative_page_obj(github_login):
     #github login wrong SELENIUM
     
-    # create webdriver object
-    driver = webdriver.Chrome()
-    driver.get('https://www.github.com/login')
+    # enter wrong credentils
+    github_login.try_to_login()
     
-    # enter wring credentils
-    login_field = driver.find_element(By.ID, 'login_field')
-    login_field.send_keys('wrong_email')
-    
-    pass_field = driver.find_element(By.CSS_SELECTOR, '#password')
-    action = ActionChains(driver)
-    action.move_to_element(pass_field).send_keys('wrong_pass')
-
-    # click button
-    pass_field_click = driver.find_element(By.NAME, 'commit')
-    pass_field_click.click()
-
     # check error msg
-    error_msg = driver.find_element(By.ID, 'js-flash-container')
-    print(f'error msg: {error_msg}')
-    time.sleep(5)
-    assert error_msg is not None
+    github_login.check_error_message()
 
-    driver.close()
 
