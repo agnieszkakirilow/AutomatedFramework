@@ -1,17 +1,17 @@
-import requests
-# python -m pip install selenium
-import selenium
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.common.action_chains import ActionChains
-import time
 import pytest
 from src.applications.github.ui.github_ui import GitHubUILoginPage
+from src.helpers.browser_providers import BrowserProvider
+from src.config.config_hard import config_all
 
 @pytest.fixture
 def github_login():
     # tearup for each
-    github_login_page = GitHubUILoginPage()
+    
+    driver = BrowserProvider.get_driver(config_all.__getattr__("BROWSER"))
+    github_login_page = GitHubUILoginPage(driver)
     github_login_page.navigate_to_page()
 
     yield github_login_page

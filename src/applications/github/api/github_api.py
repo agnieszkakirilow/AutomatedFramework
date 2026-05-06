@@ -5,9 +5,6 @@ from src.config.config_hard import config_all
 class GitHubAPIClient:
     """Current class contains every API call we use in tests"""
     
-    def __init__(self):
-        pass
-
     def search_repos(self, repo_name):
         """searches for the repository and returns body
         Documentation: https://docs.github.com
